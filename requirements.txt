@@ -1,0 +1,5 @@
+Django==2.1.7 
+line-bot-sdk==1.8.0
+gunicorn
+django-heroku
+psycopg2-binary
