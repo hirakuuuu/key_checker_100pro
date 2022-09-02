@@ -28,7 +28,7 @@ SECRET_KEY = os.environ["DJANGO_SECRET_KEY"]
 
 
 DEBUG = False
-django_heroku.settings(locals(locals(), secret_key=False))
+django_heroku.settings(locals(), secret_key=False)
 ALLOWED_HOSTS = []
 
 
