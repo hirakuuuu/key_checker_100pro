@@ -39,12 +39,10 @@ def callback(request):
 def handle_follow(event):
     line_bot_api.reply_message(
         event.reply_token,
-        TextSendMessage(text='初めまして')
+        [TextSendMessage(text='初めまして'),
+         TextSendMessage(text='登録ありがとうございます'),]
     )
-    line_bot_api.reply_message(
-        event.reply_token,
-        TextSendMessage(text='登録ありがとうございます')
-    )
+
 
 
 # オウム返し
