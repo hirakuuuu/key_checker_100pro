@@ -7,6 +7,7 @@ from linebot.models import (
     MessageEvent,
     TextMessage,
     TextSendMessage,
+    FollowEvent,
 )
 import os
 
@@ -31,6 +32,19 @@ def callback(request):
         HttpResponseForbidden()
     # tryがうまく行けば200を返す
     return HttpResponse('OK', status=200)
+
+# addメソッドの引数にイベントのモデルを入れる
+# 関数名は自由
+@handler.add(FollowEvent)
+def handle_follow(event):
+    line_bot_api.reply_message(
+        event.reply_token,
+        TextSendMessage(text='初めまして')
+    )
+    line_bot_api.reply_message(
+        event.reply_token,
+        TextSendMessage(text='登録ありがとうございます')
+    )
 
 
 # オウム返し
