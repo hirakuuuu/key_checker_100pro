@@ -14,6 +14,7 @@ from linebot.models import (
     TemplateSendMessage,
     ButtonsTemplate,
     PostbackTemplateAction,
+    PostbackEvent
 )
 import os
 
@@ -40,22 +41,6 @@ def callback(request):
     return HttpResponse('OK', status=200)
 
 
-# 加速度情報の登録を促すためのメッセージ（登録してすぐ送信）
-initialize_button_message = TemplateSendMessage(
-    alt_text='initialize button',
-    template=ButtonsTemplate(
-        title='鍵の情報を登録',
-        text='鍵の状態を計算するための情報を登録します',
-        actions=[
-            PostbackTemplateAction(
-                label='OK',
-                display_text='鍵の状態を登録',
-                data='action=register&step=1'
-            )
-
-        ]
-    )
-)
 
 # 鍵が開いている状態を登録するためのメッセージ
 register_open_button_message = TemplateSendMessage(
@@ -120,14 +105,99 @@ def handle_follow(event):
         User.objects.create(user_id=userId)
         User.save()
 
-
     
+
     line_bot_api.reply_message(
         event.reply_token,
         [TextSendMessage(text='初めまして'),
          TextSendMessage(text='登録ありがとうございます'),
          initialize_button_message,]
     )
+
+@handler.add(PostbackEvent)
+def handle_postback_event(event):
+# ポストバックの内容を取得
+    w_action = event.postback.data.split("&")[0].replace("action=", "")
+    w_step = event.postback.data.split("&")[1].replace("step=", "")
+    
+    # 登録時の処理
+    if w_action == "register":
+        # ステップごとに処理を記述
+        # ステップ１
+        if w_step == '1':
+            # 鍵が開いている状態を登録するためのメッセージを送信
+            line_bot_api.reply_message(
+                event.reply_token,
+                register_open_button_message
+            )
+        # ステップ２
+        elif w_step == '2':
+            # 鍵が開いている状態の加速度情報をDBに登録
+
+            # 加速度情報を取得する処理（とりあえず仮の値を使う）
+
+            x_open = 0
+            y_open = 0
+            z_open = 0
+
+            # 加速度情報の登録
+            try:
+                userId = event.source.userId
+                # ユーザーのデータのオブジェクトを取得
+                registering_user = User.objects.get(user_id = userId)
+                # 加速度情報を更新
+                registering_user.x_open = x_open
+                registering_user.y_open = y_open
+                registering_user.z_open = z_open
+                # 保存
+                User.save()
+                
+                # 正常に登録できたら、閉まっている状態の登録に進む
+                line_bot_api.reply_message(
+                    event.reply_token,
+                    register_close_button_message
+                )
+            except:
+                # 失敗したらもう一度登録し直す
+                line_bot_api.reply_message(
+                    event.reply_token,
+                    reregister_button_message
+                )
+        # ステップ３
+        elif w_step == '3':
+            # 鍵が閉まっている状態の加速度情報をDBに登録
+
+            # 加速度情報を取得する処理（とりあえず仮の値を使う）
+
+            x_close = 0
+            y_close = 0
+            z_close = 0
+
+            # 加速度情報の登録
+            try:
+                userId = event.source.userId
+                # ユーザーのデータのオブジェクトを取得
+                registering_user = User.objects.get(user_id = userId)
+                # 加速度情報を更新
+                registering_user.x_close = x_close
+                registering_user.y_close = y_close
+                registering_user.z_close = z_close
+                # 保存
+                User.save()
+                
+                # 正常に登録できたら、完了メッセージを送信
+                line_bot_api.reply_message(
+                    event.reply_token,
+                    TextSendMessage(text='正常に登録が完了しました')
+                )
+            except:
+                # 失敗したらもう一度登録し直す
+                line_bot_api.reply_message(
+                    event.reply_token,
+                    reregister_button_message
+                )
+
+
 
 
 
@@ -136,93 +206,9 @@ def handle_follow(event):
 # Messageが送られてきた時の処理のため、
 # MessageEventを第一引数に、第二引数でmessageにmessage内容を代入
 def handle_text_message(event):
-    if event.type == "message":
-        line_bot_api.reply_message(event.reply_token,
+    line_bot_api.reply_message(event.reply_token,
                                TextSendMessage(text=event.message.text))
-    elif event.type == "postback":
-        # ポストバックの内容を取得
-        w_action = event.postback.data.split("&")[0].replace("action=", "")
-        w_step = event.postback.data.split("&")[1].replace("step=", "")
         
-        # 登録時の処理
-        if w_action == "register":
-            # ステップごとに処理を記述
-            # ステップ１
-            if w_step == '1':
-                # 鍵が開いている状態を登録するためのメッセージを送信
-                line_bot_api.reply_message(
-                    event.reply_token,
-                    register_open_button_message
-                )
-            # ステップ２
-            elif w_step == '2':
-                # 鍵が開いている状態の加速度情報をDBに登録
-
-                # 加速度情報を取得する処理（とりあえず仮の値を使う）
-
-                x_open = 0
-                y_open = 0
-                z_open = 0
-
-                # 加速度情報の登録
-                try:
-                    userId = event.source.userId
-                    # ユーザーのデータのオブジェクトを取得
-                    registering_user = User.objects.get(user_id = userId)
-                    # 加速度情報を更新
-                    registering_user.x_open = x_open
-                    registering_user.y_open = y_open
-                    registering_user.z_open = z_open
-                    # 保存
-                    User.save()
-                    
-                    # 正常に登録できたら、閉まっている状態の登録に進む
-                    line_bot_api.reply_message(
-                        event.reply_token,
-                        register_close_button_message
-                    )
-                except:
-                    # 失敗したらもう一度登録し直す
-                    line_bot_api.reply_message(
-                        event.reply_token,
-                        reregister_button_message
-                    )
-            # ステップ３
-            elif w_step == '3':
-                # 鍵が閉まっている状態の加速度情報をDBに登録
-
-                # 加速度情報を取得する処理（とりあえず仮の値を使う）
-
-                x_close = 0
-                y_close = 0
-                z_close = 0
-
-                # 加速度情報の登録
-                try:
-                    userId = event.source.userId
-                    # ユーザーのデータのオブジェクトを取得
-                    registering_user = User.objects.get(user_id = userId)
-                    # 加速度情報を更新
-                    registering_user.x_close = x_close
-                    registering_user.y_close = y_close
-                    registering_user.z_close = z_close
-                    # 保存
-                    User.save()
-                    
-                    # 正常に登録できたら、完了メッセージを送信
-                    line_bot_api.reply_message(
-                        event.reply_token,
-                        TextSendMessage(text='正常に登録が完了しました')
-                    )
-                except:
-                    # 失敗したらもう一度登録し直す
-                    line_bot_api.reply_message(
-                        event.reply_token,
-                        reregister_button_message
-                    )
-
-
-
 
 
         
