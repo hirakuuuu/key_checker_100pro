@@ -8,6 +8,9 @@ from linebot.models import (
     TextMessage,
     TextSendMessage,
     FollowEvent,
+    TemplateSendMessage,
+    ButtonsTemplate,
+    PostbackTemplateAction,
 )
 import os
 
@@ -37,10 +40,28 @@ def callback(request):
 # 関数名は自由
 @handler.add(FollowEvent)
 def handle_follow(event):
+    # 加速度情報を初期化するボタンを作成
+    initialize_button_message = TemplateSendMessage(
+        alt_text='initialize button',
+        template=ButtonsTemplate(
+            title='鍵の情報を登録',
+            text='鍵の状態を計算するための情報を登録します',
+            actions=[
+                PostbackTemplateAction(
+                    label='OK',
+                    display_text='postback text',
+                    data='action=buy&itemid=1'
+                )
+
+            ]
+        )
+    )
+    
     line_bot_api.reply_message(
         event.reply_token,
         [TextSendMessage(text='初めまして'),
-         TextSendMessage(text='登録ありがとうございます'),]
+         TextSendMessage(text='登録ありがとうございます'),
+         initialize_button_message,]
     )
 
 
