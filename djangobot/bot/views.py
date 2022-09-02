@@ -41,6 +41,22 @@ def callback(request):
     return HttpResponse('OK', status=200)
 
 
+# 加速度情報の登録を促すためのメッセージ（登録してすぐ送信）
+initialize_button_message = TemplateSendMessage(
+    alt_text='initialize button',
+    template=ButtonsTemplate(
+        title='鍵の情報を登録',
+        text='鍵の状態を計算するための情報を登録します',
+        actions=[
+            PostbackTemplateAction(
+                label='OK',
+                display_text='鍵の状態を登録',
+                data='action=register&step=1'
+            )
+
+        ]
+    )
+)
 
 # 鍵が開いている状態を登録するためのメッセージ
 register_open_button_message = TemplateSendMessage(
@@ -104,8 +120,6 @@ def handle_follow(event):
     if exist == None:
         User.objects.create(user_id=userId)
         User.save()
-
-    
 
     line_bot_api.reply_message(
         event.reply_token,
