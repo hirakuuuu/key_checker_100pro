@@ -116,16 +116,16 @@ reregister_button_message = TemplateSendMessage(
 def handle_follow(event):
     # ユーザーの登録
     # ユーザーが存在するかどうかを判定
-    userId = event.source.userId
-    LineUser.objects.create(
-        user_id=userId,
-        x_open=0,
-        y_open=0,
-        z_open=0,
-        x_close=0,
-        y_close=0,
-        z_close=0,
-    )
+    # userId = event.source.userId
+    # LineUser.objects.create(
+    #     user_id=userId,
+    #     x_open=0,
+    #     y_open=0,
+    #     z_open=0,
+    #     x_close=0,
+    #     y_close=0,
+    #     z_close=0,
+    # )
 
     line_bot_api.reply_message(
         event.reply_token,
