@@ -123,7 +123,7 @@ register_open_button_message = TemplateSendMessage(
             PostbackTemplateAction(
                 label='OK',
                 display_text='開いている状態を登録',
-                data='action=register&step=open'
+                data='action=register&step=openn'
             )
 
         ]
@@ -218,7 +218,12 @@ def handle_postback_event(event):
                     event.reply_token,
                     reregister_button_message
                 )
-
+        else:
+            # 正常に登録できたら、完了メッセージを送信
+            line_bot_api.reply_message(
+                event.reply_token,
+                TextSendMessage(text=event.postback.data)
+            )
 
 
 
