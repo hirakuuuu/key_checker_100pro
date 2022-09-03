@@ -20,7 +20,7 @@ from bot import views
 
 
 urlpatterns = [
-    # path('callback/', include('bot.urls')),
+    path('callback/', include('bot.urls')),
     path('admin/', admin.site.urls),
 ]
 
