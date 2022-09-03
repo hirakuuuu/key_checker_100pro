@@ -69,19 +69,19 @@ def callback(request):
 
                     # 加速度情報を取得する処理（とりあえず仮の値を使う）
 
-                    x_open = 0
-                    y_open = 0
-                    z_open = 0
+                    x = 1
+                    y = 1
+                    z = 1
 
                     # 加速度情報の登録
                     try:
                         registering_user = LineUser.objects.get(user_id = line_user_id)
                         # 加速度情報を更新
-                        registering_user.x_open = x_open
-                        registering_user.y_open = y_open
-                        registering_user.z_open = z_open
+                        registering_user.x_open = x
+                        registering_user.y_open = y
+                        registering_user.z_open = z
                         # 保存
-                        LineUser.save()
+                        registering_user.save()
                     except:
                         pass
                 elif w_step == '3':
@@ -89,20 +89,20 @@ def callback(request):
 
                     # 加速度情報を取得する処理（とりあえず仮の値を使う）
 
-                    x_close = 0
-                    y_close = 0
-                    z_close = 0
+                    x = 2
+                    y = 2
+                    z = 2
 
                     # 加速度情報の登録
                     try:
                         # ユーザーのデータのオブジェクトを取得
                         registering_user = LineUser.objects.get(user_id = line_user_id)
                         # 加速度情報を更新
-                        registering_user.x_close = x_close
-                        registering_user.y_close = y_close
-                        registering_user.z_close = z_close
+                        registering_user.x_close = x
+                        registering_user.y_close = y
+                        registering_user.z_close = z
                         # 保存
-                        LineUser.save()
+                        registering_user.save()
                     except:
                         pass
     # tryがうまく行けば200を返す
