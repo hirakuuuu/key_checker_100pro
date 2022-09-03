@@ -116,7 +116,7 @@ register_open_button_message = TemplateSendMessage(
             PostbackTemplateAction(
                 label='OK',
                 display_text='開いている状態を登録',
-                data='action=register&step=openn'
+                data='action=register&step=open'
             )
 
         ]
