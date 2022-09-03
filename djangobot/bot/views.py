@@ -74,16 +74,13 @@ def callback(request):
                     z = 1
 
                     # 加速度情報の登録
-                    try:
-                        registering_user = LineUser.objects.get(user_id = line_user_id)
-                        # 加速度情報を更新
-                        registering_user.x_open = x
-                        registering_user.y_open = y
-                        registering_user.z_open = z
-                        # 保存
-                        registering_user.save()
-                    except:
-                        pass
+                    registering_user = LineUser.objects.get(user_id = line_user_id)
+                    # 加速度情報を更新
+                    registering_user.x_open = x
+                    registering_user.y_open = y
+                    registering_user.z_open = z
+                    # 保存
+                    registering_user.save()
                 elif w_step == '3':
                     # 鍵が閉まっている状態の加速度情報をDBに登録
 
@@ -94,17 +91,15 @@ def callback(request):
                     z = 2
 
                     # 加速度情報の登録
-                    try:
-                        # ユーザーのデータのオブジェクトを取得
-                        registering_user = LineUser.objects.get(user_id = line_user_id)
-                        # 加速度情報を更新
-                        registering_user.x_close = x
-                        registering_user.y_close = y
-                        registering_user.z_close = z
-                        # 保存
-                        registering_user.save()
-                    except:
-                        pass
+                    # ユーザーのデータのオブジェクトを取得
+                    registering_user = LineUser.objects.get(user_id = line_user_id)
+                    # 加速度情報を更新
+                    registering_user.x_close = x
+                    registering_user.y_close = y
+                    registering_user.z_close = z
+                    # 保存
+                    registering_user.save()
+                    
     # tryがうまく行けば200を返す
     return HttpResponse('OK', status=200)
 
