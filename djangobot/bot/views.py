@@ -64,7 +64,7 @@ def callback(request):
             
             # 登録時の処理
             if w_action == "register":
-                if w_step == '2':
+                if w_step == 'open':
                     # 鍵が開いている状態の加速度情報をDBに登録
 
                     # 加速度情報を取得する処理（とりあえず仮の値を使う）
@@ -81,7 +81,7 @@ def callback(request):
                     registering_user.z_open = z
                     # 保存
                     registering_user.save()
-                elif w_step == '3':
+                elif w_step == 'close':
                     # 鍵が閉まっている状態の加速度情報をDBに登録
 
                     # 加速度情報を取得する処理（とりあえず仮の値を使う）
@@ -99,7 +99,7 @@ def callback(request):
                     registering_user.z_close = z
                     # 保存
                     registering_user.save()
-                    
+
     # tryがうまく行けば200を返す
     return HttpResponse('OK', status=200)
 
@@ -114,7 +114,7 @@ initialize_button_message = TemplateSendMessage(
             PostbackTemplateAction(
                 label='OK',
                 display_text='鍵の状態を登録',
-                data='action=register&step=1'
+                data='action=register&step=start'
             )
 
         ]
@@ -131,7 +131,7 @@ register_open_button_message = TemplateSendMessage(
             PostbackTemplateAction(
                 label='OK',
                 display_text='開いている状態を登録',
-                data='action=register&step=2'
+                data='action=register&step=open'
             )
 
         ]
@@ -148,7 +148,7 @@ register_close_button_message = TemplateSendMessage(
             PostbackTemplateAction(
                 label='OK',
                 display_text='閉まっている状態を登録',
-                data='action=register&step=3'
+                data='action=register&step=close'
             )
 
         ]
@@ -192,14 +192,14 @@ def handle_postback_event(event):
     if w_action == "register":
         # ステップごとに処理を記述
         # ステップ１
-        if w_step == '1':
+        if w_step == 'start':
             # 鍵が開いている状態を登録するためのメッセージを送信
             line_bot_api.reply_message(
                 event.reply_token,
                 register_open_button_message
             )
         # ステップ２
-        elif w_step == '2':
+        elif w_step == 'open':
             try:
                 # 正常に登録できたら、閉まっている状態の登録に進む
                 line_bot_api.reply_message(
@@ -213,7 +213,7 @@ def handle_postback_event(event):
                     reregister_button_message
                 )
         # ステップ３
-        elif w_step == '3':
+        elif w_step == 'close':
             try:
                 # 正常に登録できたら、完了メッセージを送信
                 line_bot_api.reply_message(
