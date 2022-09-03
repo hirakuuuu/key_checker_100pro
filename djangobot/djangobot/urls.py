@@ -16,7 +16,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
+from bot import views
+
+
 urlpatterns = [
-    path('callback/', include('bot.urls')),
+    # path('callback/', include('bot.urls')),
     path('admin/', admin.site.urls),
 ]
+
+handler500 = views.my_customized_server_error
