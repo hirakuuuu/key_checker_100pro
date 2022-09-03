@@ -59,8 +59,8 @@ def callback(request):
         # postbackの処理
         elif events[0]['type'] == 'postback':
             # ポストバックの内容を取得
-            w_action = events[0]['postback']['data'].split("&")[0].replace("action=", "")
-            w_step = events[0]['postback']['data'].split("&")[1].replace("step=", "")
+            w_action = events[0]['data'].split("&")[0].replace("action=", "")
+            w_step = events[0]['data'].split("&")[1].replace("step=", "")
             
             # 登録時の処理
             if w_action == "register":
