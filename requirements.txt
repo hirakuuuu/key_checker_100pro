@@ -4,4 +4,3 @@ gunicorn
 django-heroku
 psycopg2-binary
 whitenoise
-psycopg2==2.7.6.1
