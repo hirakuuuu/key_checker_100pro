@@ -69,16 +69,12 @@ def callback(request):
 
                     # 加速度情報を取得する処理（とりあえず仮の値を使う）
 
-                    x = 1
-                    y = 1
-                    z = 1
-
                     # 加速度情報の登録
                     registering_user = LineUser.objects.get(user_id = line_user_id)
                     # 加速度情報を更新
-                    registering_user.x_open = x
-                    registering_user.y_open = y
-                    registering_user.z_open = z
+                    registering_user.x_open = 1
+                    registering_user.y_open = 1
+                    registering_user.z_open = 1
                     # 保存
                     registering_user.save()
                 elif w_step == 'close':
@@ -86,17 +82,13 @@ def callback(request):
 
                     # 加速度情報を取得する処理（とりあえず仮の値を使う）
 
-                    x = 2
-                    y = 2
-                    z = 2
-
                     # 加速度情報の登録
                     # ユーザーのデータのオブジェクトを取得
                     registering_user = LineUser.objects.get(user_id = line_user_id)
                     # 加速度情報を更新
-                    registering_user.x_close = x
-                    registering_user.y_close = y
-                    registering_user.z_close = z
+                    registering_user.x_close = 2
+                    registering_user.y_close = 2
+                    registering_user.z_close = 2
                     # 保存
                     registering_user.save()
 
