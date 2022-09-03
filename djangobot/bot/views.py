@@ -221,7 +221,7 @@ def handle_postback_event(event):
 # MessageEventを第一引数に、第二引数でmessageにmessage内容を代入
 def handle_text_message(event):
     line_bot_api.reply_message(event.reply_token,
-                               TextSendMessage(text=event.message.text))
+                            initialize_button_message,)
         
 
 
