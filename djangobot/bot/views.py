@@ -4,7 +4,7 @@ from django.views.decorators.csrf import csrf_exempt, requires_csrf_token
 
 from django.http import HttpResponseServerError
 
-from .models import User
+from .models import LineUser
 
 from linebot import (LineBotApi, WebhookHandler)
 from linebot.exceptions import (InvalidSignatureError)
@@ -117,8 +117,8 @@ def handle_follow(event):
     # ユーザーの登録
     # ユーザーが存在するかどうかを判定
     userId = event.source.userId
-    User.objects.create(user_id=userId)
-    User.save()
+    LineUser.objects.create(user_id=userId)
+    LineUser.save()
 
     line_bot_api.reply_message(
         event.reply_token,
@@ -157,13 +157,13 @@ def handle_postback_event(event):
             try:
                 userId = event.source.userId
                 # ユーザーのデータのオブジェクトを取得
-                registering_user = User.objects.get(user_id = userId)
+                registering_user = LineUser.objects.get(user_id = userId)
                 # 加速度情報を更新
                 registering_user.x_open = x_open
                 registering_user.y_open = y_open
                 registering_user.z_open = z_open
                 # 保存
-                User.save()
+                LineUser.save()
                 
                 # 正常に登録できたら、閉まっている状態の登録に進む
                 line_bot_api.reply_message(
@@ -190,13 +190,13 @@ def handle_postback_event(event):
             try:
                 userId = event.source.userId
                 # ユーザーのデータのオブジェクトを取得
-                registering_user = User.objects.get(user_id = userId)
+                registering_user = LineUser.objects.get(user_id = userId)
                 # 加速度情報を更新
                 registering_user.x_close = x_close
                 registering_user.y_close = y_close
                 registering_user.z_close = z_close
                 # 保存
-                User.save()
+                LineUser.save()
                 
                 # 正常に登録できたら、完了メッセージを送信
                 line_bot_api.reply_message(
