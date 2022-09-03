@@ -111,7 +111,7 @@ register_open_button_message = TemplateSendMessage(
     alt_text='register open button',
     template=ButtonsTemplate(
         title='鍵が開いているときの状態を登録',
-        text='鍵が開いている時の状態を登録します。鍵が開いており、本製品が正しく取り付けられていることを確認して、OKを押して下さい',
+        text='OKを押して下さい',
         actions=[
             PostbackTemplateAction(
                 label='OK',
@@ -128,7 +128,7 @@ register_close_button_message = TemplateSendMessage(
     alt_text='register close button',
     template=ButtonsTemplate(
         title='鍵が閉まっているときの状態を登録',
-        text='鍵が閉まっている時の状態を登録します。鍵が閉まっており、本製品が正しく取り付けられていることを確認して、OKを押して下さい',
+        text='OKを押して下さい',
         actions=[
             PostbackTemplateAction(
                 label='OK',
