@@ -44,7 +44,7 @@ def callback(request):
 
     """ラインの友達追加時・メッセージ受信時に呼ばれる"""
     if request.method == 'POST':
-        request_json = json.loads(request.body.decode('utf-8'))
+        request_json = json.loads(body)
         events = request_json['events']
         line_user_id = events[0]['source']['userId']
 
