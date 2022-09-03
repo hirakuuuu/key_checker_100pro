@@ -118,7 +118,6 @@ def handle_follow(event):
     # ユーザーが存在するかどうかを判定
     userId = event.source.userId
     LineUser.objects.create(user_id=userId)
-    LineUser.save()
 
     line_bot_api.reply_message(
         event.reply_token,
