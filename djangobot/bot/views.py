@@ -117,11 +117,8 @@ def handle_follow(event):
     # ユーザーの登録
     # ユーザーが存在するかどうかを判定
     userId = event.source.userId
-    exist =  User.objects.all().filter(user_id = userId)
-    # 存在しなければ新たにユーザーを作成
-    if exist == None:
-        User.objects.create(user_id=userId)
-        User.save()
+    User.objects.create(user_id=userId)
+    User.save()
 
     line_bot_api.reply_message(
         event.reply_token,
