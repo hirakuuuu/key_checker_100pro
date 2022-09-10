@@ -21,8 +21,32 @@ from linebot.models import (
 
 import os
 import json
+import socket
+
+remote_host = 'key-checker.herokuapp.com'
+port = 7010
+buffer_size = 4092
+
 
 def index(request):
+    # Socketの作成
+    try:
+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+            # IP Adress とPort番号をソケット割り当てる
+            s.bind((socket.gethostbyname(remote_host), port))
+            # Socketの待機状態
+            s.listen(5)
+            # while Trueでクライアントからの要求を待つ
+            while True:
+                # 要求があれば接続の確立とアドレス、アドレスを代入
+                conn, addr = s.accept()
+                # データを受信する
+                data = conn.recv(buffer_size)
+                print('data-> {}, addr->{}'.format(data, addr))
+                # データを送信する
+                conn.sendall(b'I received the data correctly.')
+    except:
+        print('Error')
     return render(request, 'index.html', {})
 
 YOUR_CHANNEL_ACCESS_TOKEN = os.environ["YOUR_CHANNEL_ACCESS_TOKEN"] # YOUR_CHANNEL_ACCESS_TOKENは環境変数であり、後に設定する
