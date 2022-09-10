@@ -23,7 +23,7 @@ import os
 import json
 
 def index(request):
-    return render(request, 'idex.html', {})
+    return render(request, 'index.html', {})
 
 YOUR_CHANNEL_ACCESS_TOKEN = os.environ["YOUR_CHANNEL_ACCESS_TOKEN"] # YOUR_CHANNEL_ACCESS_TOKENは環境変数であり、後に設定する
 YOUR_CHANNEL_SECRET = os.environ["YOUR_CHANNEL_SECRET"]# YOUR_CHANNEL_SECRETも環境変数であり、後に設定する
